@@ -1870,7 +1870,7 @@ static void drm_kick_frame_boost(int timeout_ms)
 	if (!timeout_ms)
 		return;
 
-	if (timeout_ms < 0 || cpu_input_boost_within_input(timeout_ms)) {
+	if (timeout_ms < 0) {
 		devfreq_boost_kick(DEVFREQ_MSM_CPUBW);
 	}
 }
