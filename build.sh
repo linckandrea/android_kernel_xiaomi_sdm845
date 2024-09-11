@@ -7,7 +7,7 @@ branch_name=$(git rev-parse --abbrev-ref HEAD)
 last_commit=$(git rev-parse --verify --short=8 HEAD)
 export LOCALVERSION="-Armonia-Kernel-${branch_name}/${last_commit}"
 
-make O=out ARCH=arm64 Armonia_beryllium_defconfig
+make O=out ARCH=arm64 Armonia_beryllium_full_defconfig
 
 PATH=""$HOME"/Android-dev/toolchains/aosp-clang/clang-r416183b/bin:"$HOME"/Android-dev/toolchains/aosp-clang/aarch64-linux-android-4.9/bin:"$HOME"/Android-dev/toolchains/aosp-clang/arm-linux-androideabi-4.9/bin:${PATH}" \
 make -j$(nproc --all) O=out \
