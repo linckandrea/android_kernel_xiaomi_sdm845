@@ -32,20 +32,12 @@ static void __fscrypt_decrypt_bio(struct bio *bio, bool done)
 
 	bio_for_each_segment_all(bv, bio, i) {
 		struct page *page = bv->bv_page;
-<<<<<<< HEAD
 
 		if (fscrypt_using_hardware_encryption(page->mapping->host)) {
-=======
-		int ret = fscrypt_decrypt_pagecache_blocks(page, bv->bv_len,
-							   bv->bv_offset);
-		if (ret)
-			SetPageError(page);
-		else if (done)
->>>>>>> dead1f52f936cc27b91c23a78092765f004bf85e
 			SetPageUptodate(page);
 		} else {
-			int ret = fscrypt_decrypt_page(page->mapping->host,
-				page, PAGE_SIZE, 0, page->index);
+			int ret = fscrypt_decrypt_pagecache_blocks(page, bv->bv_len,
+								   bv->bv_offset);
 			if (ret) {
 				SetPageError(page);
 			} else if (done) {
