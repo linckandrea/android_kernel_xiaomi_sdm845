@@ -9,14 +9,18 @@ export LOCALVERSION="-Armonia-Kernel-${branch_name}/${last_commit}"
 
 make O=out ARCH=arm64 Armonia_beryllium_full_defconfig
 
-PATH=""$HOME"/Android-dev/toolchains/aosp-clang/clang-r416183b/bin:"$HOME"/Android-dev/toolchains/aosp-clang/aarch64-linux-android-4.9/bin:"$HOME"/Android-dev/toolchains/aosp-clang/arm-linux-androideabi-4.9/bin:${PATH}" \
+PATH=""$HOME"/Android-dev/toolchains/aosp-clang/clang-r522817/bin:"$HOME"/Android-dev/toolchains/aosp-clang/aarch64-linux-android-4.9/bin:"$HOME"/Android-dev/toolchains/aosp-clang/arm-linux-androideabi-4.9/bin:${PATH}" \
 make -j$(nproc --all) O=out \
                       ARCH=arm64 \
                       SUBARCH=arm64 \
                       CC=clang \
                       CLANG_TRIPLE=aarch64-linux-gnu- \
                       CROSS_COMPILE=aarch64-linux-android- \
-                      CROSS_COMPILE_ARM32=arm-linux-androideabi-
+                      CROSS_COMPILE_ARM32=arm-linux-androideabi- \
+                      HOSTCFLAGS="-fuse-ld=lld -Wno-unused-command-line-argument" \
+                      LLVM=1 \
+                      LLVM_IAS=1
+
 
 rm ./AnyKernel3/beryllium/*.zip
 rm ./AnyKernel3/beryllium/Image.gz-dtb
