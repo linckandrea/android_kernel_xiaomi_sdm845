@@ -10,6 +10,15 @@
 #include <linux/input.h>
 #include <linux/kthread.h>
 #include <linux/slab.h>
+#include <linux/moduleparam.h>
+
+static unsigned short devfreq_wake_boost_duration_ms __read_mostly =
+	CONFIG_DEVFREQ_WAKE_BOOST_DURATION_MS;
+module_param(devfreq_wake_boost_duration_ms, ushort, 0644);
+
+static unsigned short devfreq_input_boost_duration_ms __read_mostly =
+	CONFIG_DEVFREQ_INPUT_BOOST_DURATION_MS;
+module_param(devfreq_input_boost_duration_ms, ushort, 0644);
 
 enum {
 	SCREEN_OFF,
@@ -60,7 +69,7 @@ static void __devfreq_boost_kick(struct boost_dev *b)
 
 	set_bit(INPUT_BOOST, &b->state);
 	if (!mod_delayed_work(system_unbound_wq, &b->input_unboost,
-		msecs_to_jiffies(CONFIG_DEVFREQ_INPUT_BOOST_DURATION_MS)))
+		msecs_to_jiffies(devfreq_input_boost_duration_ms)))
 		wake_up(&b->boost_waitq);
 }
 
@@ -114,7 +123,7 @@ static void __devfreq_boost_kick_wake(struct boost_dev *b)
 
 	set_bit(WAKE_BOOST, &b->state);
 	__devfreq_boost_kick_max(b,
-				 CONFIG_DEVFREQ_WAKE_BOOST_DURATION_MS);
+				 devfreq_wake_boost_duration_ms);
 }
 
 void devfreq_boost_kick_wake(enum df_device device)
